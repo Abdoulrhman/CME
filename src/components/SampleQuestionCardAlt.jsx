@@ -1,35 +1,22 @@
 import React from "react";
-import { Paper, Typography, Box } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   card: {
-    width: 213,
-    height: 152,
+    width: "100%",
+    minHeight: 56,
     borderRadius: 16,
     border: "1px solid #F3F4F6",
-    background: "#FFF",
+    background: "#F3F4F6",
     padding: 16,
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "flex-start",
-    gap: 12,
+    gap: 0,
     boxShadow: "none",
     cursor: "pointer",
-    transition: "box-shadow 0.2s",
-    "&:hover": {
-      boxShadow: "0 2px 8px rgba(34,30,88,0.08)",
-    },
-  },
-  iconBox: {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
-    background: "#F4FBF6",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
   },
   questionText: {
     fontWeight: 500,
@@ -40,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export function SampleQuestionCard({ icon, children, onClick }) {
+export function SampleQuestionCardAlt({ children, onClick }) {
   const classes = useStyles();
   return (
     <Paper
@@ -50,9 +37,6 @@ export function SampleQuestionCard({ icon, children, onClick }) {
       tabIndex={0}
       role="button"
     >
-      <Box className={classes.iconBox}>
-        {icon && <span style={{ fontSize: 28 }}>{icon}</span>}
-      </Box>
       <Typography className={classes.questionText}>{children}</Typography>
     </Paper>
   );
