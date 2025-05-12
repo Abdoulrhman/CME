@@ -1,33 +1,33 @@
-import React from 'react';
-import { Box, TextField, IconButton } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import React from "react";
+import { Box, TextField, IconButton } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const useStyles = makeStyles(() => ({
   inputContainer: {
-    width: '100%',
+    width: "100%",
     maxWidth: 900,
     borderRadius: 16,
-    border: '1px solid #E5E7EB',
-    background: '#FCFCFD',
+    border: "1px solid #E5E7EB",
+    background: "#FCFCFD",
     padding: 16,
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
     gap: 32,
-    boxSizing: 'border-box',
+    boxSizing: "border-box",
+    minHeight: 132,
   },
   textFieldRoot: {
     flex: 1,
-    background: 'transparent',
-    '& .MuiInputBase-root': {
+    background: "transparent",
+    "& .MuiInputBase-root": {
       fontSize: 16,
-      background: 'transparent',
+      background: "transparent",
     },
-    '& .MuiInputBase-input': {
+    "& .MuiInputBase-input": {
       padding: 0,
     },
-    '& .MuiInput-underline:before, & .MuiInput-underline:after': {
-      borderBottom: 'none',
+    "& .MuiInput-underline:before, & .MuiInput-underline:after": {
+      borderBottom: "none",
     },
   },
   iconButton: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 export function ChatbotInput({ value, onChange, onSend, placeholder }) {
   const classes = useStyles();
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       onSend();
     }
@@ -48,7 +48,7 @@ export function ChatbotInput({ value, onChange, onSend, placeholder }) {
     <Box className={classes.inputContainer}>
       <TextField
         className={classes.textFieldRoot}
-        placeholder={placeholder || 'Ask anything...'}
+        placeholder={placeholder || "Ask anything..."}
         variant="standard"
         fullWidth
         value={value}
@@ -56,9 +56,13 @@ export function ChatbotInput({ value, onChange, onSend, placeholder }) {
         onKeyDown={handleKeyDown}
         InputProps={{ disableUnderline: true }}
       />
-      <IconButton color="success" onClick={onSend} className={classes.iconButton}>
+      <IconButton
+        color="success"
+        onClick={onSend}
+        className={classes.iconButton}
+      >
         <ArrowUpwardIcon />
       </IconButton>
     </Box>
   );
-} 
+}

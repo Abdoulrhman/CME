@@ -1,15 +1,6 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  IconButton,
-  Grid,
-  Paper,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Grid, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SampleQuestionCard } from "./SampleQuestionCard";
 import { ChatbotInput } from "./ChatbotInput";
 import { ChatMessageQuestion } from "./ChatMessageQuestion";
@@ -18,13 +9,6 @@ import { useFullscreen } from "../contexts/FullscreenContext";
 import { SampleQuestionCardAlt } from "./SampleQuestionCardAlt";
 
 const useStyles = makeStyles(() => ({
-  centeredBox: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: 32,
-    padding: 16,
-  },
   botAvatar: {
     width: 80,
     height: 80,
@@ -33,13 +17,8 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    margin: " 0 auto",
     marginBottom: 16,
-  },
-  sampleQuestionsBox: {
-    width: "100%",
-    maxWidth: 900,
-    margin: "32px auto 0 auto",
-    padding: 16,
   },
   sampleTitle: {
     fontWeight: 600,
@@ -53,7 +32,6 @@ const useStyles = makeStyles(() => ({
   },
   chatHistory: {
     width: "100%",
-    maxWidth: 900,
     minHeight: 200,
     display: "flex",
     flexDirection: "column",
@@ -163,6 +141,7 @@ export function ChatbotContent({ onClose }) {
   const [input, setInput] = React.useState("");
   const [chatHistory, setChatHistory] = React.useState([]);
   const classes = useStyles();
+  const { value: isFullscreen } = useFullscreen();
 
   const handleSend = () => {
     if (input.trim()) {
@@ -181,32 +160,40 @@ export function ChatbotContent({ onClose }) {
     setInput(qa.question);
   };
 
-  const { value: isFullscreen } = useFullscreen();
-
   return (
-    <>
-      <Box className={classes.centeredBox}>
+    <Box
+      sx={{ px: 2, width: "100%", display: "flex", justifyContent: "center" }}
+    >
+      <Box sx={{ width: "100%", maxWidth: 900 }}>
         {isFullscreen && (
           <div className={classes.botAvatar}>
             <BotFace />
           </div>
         )}
 
-        <Typography variant="h5" fontWeight={700} align="center" gutterBottom>
-          Hello, I'm GenAI. How can i help?
+        <Typography
+          fontSize={"30px"}
+          fontWeight={700}
+          align="center"
+          marginBottom={"56px"}
+        >
+          Hello, I'm GenAI. How can I help?
         </Typography>
-        <Box className={classes.chatHistory}>
-          {chatHistory.map((msg, i) =>
-            msg.type === "question" ? (
-              <ChatMessageQuestion key={i} text={msg.text} />
-            ) : (
-              <ChatMessageAnswer
-                key={i}
-                text={<span dangerouslySetInnerHTML={{ __html: msg.text }} />}
-              />
-            )
-          )}
-        </Box>
+
+        {chatHistory.length > 0 && (
+          <Box className={classes.chatHistory}>
+            {chatHistory.map((msg, i) =>
+              msg.type === "question" ? (
+                <ChatMessageQuestion key={i} text={msg.text} />
+              ) : (
+                <ChatMessageAnswer
+                  key={i}
+                  text={<span dangerouslySetInnerHTML={{ __html: msg.text }} />}
+                />
+              )
+            )}
+          </Box>
+        )}
 
         {isFullscreen && (
           <ChatbotInput
@@ -215,55 +202,57 @@ export function ChatbotContent({ onClose }) {
             onSend={handleSend}
           />
         )}
+
+        <Box mt={4}>
+          <Typography className={classes.sampleTitle}>
+            Sample Questions on Your Classification Process — No Data Stored
+          </Typography>
+          <Grid container spacing={2}>
+            {SAMPLE_QA.map((qa, idx) => (
+              <Grid item xs={12} sm={6} md={3} key={qa.question}>
+                {isFullscreen ? (
+                  <SampleQuestionCard
+                    icon={
+                      idx === 0 ? (
+                        <span role="img" aria-label="info">
+                          ❓
+                        </span>
+                      ) : idx === 1 ? (
+                        <span role="img" aria-label="medal">
+                          🥈
+                        </span>
+                      ) : idx === 2 ? (
+                        <span role="img" aria-label="trophy">
+                          🏆
+                        </span>
+                      ) : (
+                        <span role="img" aria-label="docs">
+                          📄
+                        </span>
+                      )
+                    }
+                    onClick={() => handleSampleCardClick(idx)}
+                  >
+                    {qa.question}
+                  </SampleQuestionCard>
+                ) : (
+                  <SampleQuestionCardAlt
+                    onClick={() => handleSampleCardClick(idx)}
+                  >
+                    {qa.question}
+                  </SampleQuestionCardAlt>
+                )}
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {onClose && (
+          <Button onClick={onClose} className={classes.closeButton}>
+            Close
+          </Button>
+        )}
       </Box>
-      <Box className={classes.sampleQuestionsBox}>
-        <Typography className={classes.sampleTitle}>
-          Sample Questions on Your Classification Process — No Data Stored
-        </Typography>
-        <Grid container spacing={2}>
-          {SAMPLE_QA.map((qa, idx) => (
-            <Grid item xs={12} sm={6} md={3} key={qa.question}>
-              {isFullscreen ? (
-                <SampleQuestionCard
-                  icon={
-                    idx === 0 ? (
-                      <span role="img" aria-label="info">
-                        ❓
-                      </span>
-                    ) : idx === 1 ? (
-                      <span role="img" aria-label="medal">
-                        🥈
-                      </span>
-                    ) : idx === 2 ? (
-                      <span role="img" aria-label="trophy">
-                        🏆
-                      </span>
-                    ) : (
-                      <span role="img" aria-label="docs">
-                        📄
-                      </span>
-                    )
-                  }
-                  onClick={() => handleSampleCardClick(idx)}
-                >
-                  {qa.question}
-                </SampleQuestionCard>
-              ) : (
-                <SampleQuestionCardAlt
-                  onClick={() => handleSampleCardClick(idx)}
-                >
-                  {qa.question}
-                </SampleQuestionCardAlt>
-              )}
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-      {onClose && (
-        <Button onClick={onClose} className={classes.closeButton}>
-          Close
-        </Button>
-      )}
-    </>
+    </Box>
   );
 }
